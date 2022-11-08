@@ -187,3 +187,44 @@ data Doggies a =
 
 --Ce tip are Husky (10 :: Integer)
 --Doggies Integer
+
+
+
+-- Curs 6
+
+--1. Clasa Eq
+-- face testarea egalitatii posibila
+
+--2. Sa presupunem ca clasa de tipuri Ord are operatorul >. Ce tip are >?
+-- Ord a => a -> a -> Bool
+
+--3. Ce puteti sa spuneti despre codul de mai jos?
+
+{-
+data Mood = Blah
+            | Woot
+            deriving Show
+
+settleDown x = if x == Woot
+                    then Blah
+                    else x
+
+-}
+
+-- codul nu este corect pentru ca nu exista o instanta a clasei Eq pentru tipul Mood
+
+data Mood = Blah
+            | Woot
+            deriving (Show)
+
+-- instance Eq Mood where
+--         (==) Blah Blah = True
+--         Woot == Woot = True
+                
+instance Eq Mood where
+    (==) Blah Blah = True
+    (==) Woot Woot = True
+    
+settleDown x = if x == Woot
+                    then Blah
+                    else x

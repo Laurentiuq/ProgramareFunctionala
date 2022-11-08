@@ -50,6 +50,10 @@ nrFeliiSicilia :: [Fruct] -> Int
 nrFeliiSicilia ls = foldl (+) 0 (map(\ (Portocala soi nr) -> nr) (filter ePortocalaDeSicilia ls))
 -}
 
+{-
+nrFeliiPortocala list = sum [felii| Portocala soi felii <- list, ePortocalaSicilia(Portocala soi felii)]
+-}
+
 nrFeliiSicilia :: [Fruct] -> Int
 nrFeliiSicilia = sum . map(\ (Portocala soi nr) -> nr) . filter ePortocalaDeSicilia 
 
@@ -68,10 +72,16 @@ nrMereViermi :: [Fruct] -> Int
 nrMereViermi = sum . map eMarCuViermi
 -}
 
-nrMereViermi = sum . map(\f -> case f of
-                           (Portocala _ _ ) -> 0
-                           (Mar _ True) -> 1
-                           (Mar _ False) -> 0)
+
+nrMereViermi l = length [1 | Mar _ areViermi <- l, areViermi]
+
+-- nrMereViermi l = length [1 | Mar _ True <- l]
+
+
+-- nrMereViermi = sum . map(\f -> case f of
+                        --    (Mar _ True) -> 1
+                        --    _ -> 0)
+
 test_nrMereViermi = nrMereViermi listaFructe == 2
 
 
@@ -134,6 +144,16 @@ doarPozN :: Matrice -> Int -> Bool
 doarPozN (M matr) n = and (map (\(L l) -> foldl (\rez x -> rez && x >= 0) True l) (filter (\(L l) -> length l == n ) matr))
 -}
 
+{-
+
+    -- rezolvare lab
+    verif (L list) n = if length list == n
+                        then length(filter(>0) list) == n
+                        else True
+
+    doarPozN(M m) n = foldr(\(L list) x -> x && verif (L list) n) True m
+
+-}
 
 doarPozN :: Matrice -> Int -> Bool
 doarPozN (M matr) n = and . map (\(L l) -> foldl (\rez x -> rez && x >= 0) True l) . filter (\(L l) -> length l == n ) $ matr
@@ -148,6 +168,18 @@ testPoz2 = doarPozN (M [L[1,2,-3], L[4,5], L[2,3,6,8], L[8,5,3]]) 3 == False
 
 -- c) Definiti predicatul corect care verifica daca toate liniile dintr-o matrice au aceeasi lungime
 
+
+{-
+    -- rezolvare lab
+
+    corect(M (x:y:xs)) = 
+        length first  == length second && corect (M(y:xs))
+        where
+            L first = x
+            L second = y
+    corect(M _ ) = True
+
+-}
 
 corect :: Matrice -> Bool
 corect (M matr) = all (==aux) lungimi
