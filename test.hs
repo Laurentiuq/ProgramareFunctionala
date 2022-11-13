@@ -228,3 +228,76 @@ instance Eq Mood where
 settleDown x = if x == Woot
                     then Blah
                     else x
+
+
+f :: (Int, (Char, Char, Char)) -> Int
+f (1, ('a', 'b', 'a')) = 1
+
+swap ::(a, b) -> (b, a)
+swap (x, y) = (y, x)
+
+first2 (x:y:xs) = (x, y)
+
+-- safetail xs | null xs = []
+            -- | otherwise = tail xs
+
+safetail [] = []
+safetail x = tail x
+
+-- False || False = False
+-- _ || True = True
+
+
+
+ceva xs = [x| x<-xs, x > 0, x >= 7]
+
+-- pyths n = [(x,y,z)| x<-[1..n], y<-[1..n], z<-[1..n], x*x + y*y == z*z]
+
+
+data Coord a  = X a | Y a
+
+-- class Eq a where
+-- (==) :: Coord a -> Coord a-> Bool
+
+instance Eq a => Eq (Coord a) where
+    (==) (X x1) (X x2) = x1 == x2
+    (==) (Y y1) (Y y2) = y1 == y2
+
+
+x = X 5
+y = X 5
+foo x = x==x
+
+
+f1 [] = []
+f1 [x] = [x]
+f1 l1 = let x:y:z = l1 in x + y : f1 z
+
+f2 :: String -> Int
+f2 st = length st
+f3 :: Int -> String
+f3 n = "ab"
+
+f4 :: (String -> Int) -> (Int -> String) -> Int -> Int
+f4 x y t = t 
+
+
+f5 :: (Int, String, String) -> Int 
+f5 (_, _, _) = 1
+
+f6 [] = []
+f6 [x] = [x]
+f6 l1 = let x:y:z = l1 in x + y:f6 z
+
+
+f7 :: (Int, (Int, Int))-> Bool -> Int
+f7 (_, (_, _)) _ = 1
+
+-- :t uncurry f7
+-- uncurry f7 :: ((Int, (Int, Int)), Bool) -> Int
+
+f8 :: (Int, Int) -> (Int, Int) -> Int -> Bool
+f8 (_, _) (_, _) _ = True
+
+-- :t curry f8
+-- curry f8 :: Int -> Int -> (Int, Int) -> Int -> Bool

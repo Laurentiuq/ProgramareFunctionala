@@ -190,3 +190,5 @@ corect (M matr) = all (==aux) lungimi
 
 testcorect1 = corect (M[L[1,2,3], L[4,5], L[2,3,6,8], L[8,5,3]]) == False
 testcorect2 = corect (M[L[1,2,3], L[4,5,8], L[3,6,8], L[8,5,3]]) == True
+
+
