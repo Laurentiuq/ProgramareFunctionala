@@ -249,24 +249,24 @@ safetail x = tail x
 
 
 
-ceva xs = [x| x<-xs, x > 0, x >= 7]
 
--- pyths n = [(x,y,z)| x<-[1..n], y<-[1..n], z<-[1..n], x*x + y*y == z*z]
-
-
-data Coord a  = X a | Y a
-
--- class Eq a where
--- (==) :: Coord a -> Coord a-> Bool
-
-instance Eq a => Eq (Coord a) where
-    (==) (X x1) (X x2) = x1 == x2
-    (==) (Y y1) (Y y2) = y1 == y2
+--ceva :: (Ord a, Num a) => [a] -> [a]
+-- ceva xs = [x| x<-xs, x > 0, x >= 7]
+--
+--pyths n = [(x,y,z)| x<-[1..n], y<-[1..n], z<-[1..n], x*x + y*y == z*z]
 
 
-x = X 5
-y = X 5
-foo x = x==x
+-- data Coord a  = X a | Y a
+
+
+-- instance Eq a => Eq (Coord a) where
+    -- (==) (X x1) (X x2) = x1 == x2
+    -- (==) (Y y1) (Y y2) = y1 == y2
+
+
+-- x = X 5
+-- y = X 5
+-- foo x = x==x
 
 
 f1 [] = []
@@ -301,3 +301,48 @@ f8 (_, _) (_, _) _ = True
 
 -- :t curry f8
 -- curry f8 :: Int -> Int -> (Int, Int) -> Int -> Bool
+
+compose :: [a -> a] -> (a -> a)
+compose = foldr (.) id
+
+
+data Point a b = Pt a b
+
+data Maybes a = Nothings | Justs a
+
+ps :: Maybes Int  -> Bool
+ps Nothings = False
+ps (Justs 7) = True
+ps (Justs _) = False
+
+data Eithers a b = Lefts a | Rights b
+mylist :: [Eithers Int String]
+mylist = [Lefts 4, Rights "Hello", Lefts 5, Rights " world!"]
+
+
+ff :: Eithers Int String -> String
+ff (Rights a) = a
+ff (Lefts _) = ""
+
+fE :: [Eithers Int String] -> String
+fE ls = foldl (++) "" . map(\x -> case x of
+                                    (Rights y) -> y
+                                    (Lefts _) -> "") $ ls
+
+fE2 :: [Eithers Int String] -> [Char]
+fE2 = concatMap ff
+
+lft :: Eithers Int String -> String
+lft (Lefts a) = "Nu e string"
+lft (Rights a) = a
+
+
+data Nus = Ni | Na
+nustiu :: Nus -> String
+-- nustiu (Ni a) = "Ni"
+nustiu Na = "Na"
+
+instance Show Nus where
+    show :: Nus -> String
+    show Ni = "Ni"
+    show Na = "Na"
